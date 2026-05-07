@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>思辨 · 出轨本能論</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0e0e0e;
+  --chat-bg:#111;
+  --bubble-a:#1e1e1e;
+  --bubble-b:#1a3a2a;
+  --text:#e8e4dc;
+  --text-dim:#888;
+  --accent:#c8a96e;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:15px;line-height:1.8;}
+a{color:var(--accent);text-decoration:none;}
+
+/* ── HEADER ── */
+.header{max-width:780px;margin:0 auto;padding:64px 24px 40px;}
+.series-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:18px;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,48px);font-weight:700;line-height:1.2;color:var(--text);margin-bottom:12px;}
+.subtitle{font-size:14px;color:var(--text-dim);margin-bottom:28px;font-style:italic;}
+.meta-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:8px;}
+.badge{font-size:11px;letter-spacing:.1em;padding:4px 12px;border:1px solid;border-radius:2px;}
+.badge-a{border-color:#555;color:#aaa;}
+.badge-b{border-color:var(--accent);color:var(--accent);}
+.divider{height:1px;background:linear-gradient(90deg,var(--accent) 0%,transparent 100%);margin:32px 0;}
+
+/* ── SUB-QUESTIONS ── */
+.section{max-width:780px;margin:0 auto;padding:0 24px 40px;}
+.section-title{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:20px;}
+.subq-list{list-style:none;counter-reset:subq;}
+.subq-list li{counter-increment:subq;display:flex;gap:16px;padding:14px 0;border-bottom:1px solid #1e1e1e;}
+.subq-list li::before{content:counter(subq,decimal-leading-zero);font-family:'Playfair Display',serif;font-size:22px;color:var(--accent);opacity:.6;min-width:32px;line-height:1;}
+.subq-list li span{font-size:14px;color:var(--text);padding-top:4px;}
+
+/* ── TABS ── */
+.tabs{max-width:780px;margin:0 auto;padding:0 24px;}
+.tab-nav{display:flex;gap:0;border-bottom:1px solid #222;margin-bottom:0;}
+.tab-btn{background:none;border:none;color:var(--text-dim);font-family:'Noto Sans TC',sans-serif;font-size:13px;letter-spacing:.1em;padding:12px 24px;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ── CHAT ── */
+.chat{background:var(--chat-bg);border-radius:0 0 8px 8px;padding:32px 20px;display:flex;flex-direction:column;gap:6px;}
+.chat-date{text-align:center;font-size:11px;letter-spacing:.15em;color:var(--text-dim);padding:24px 0 8px;text-transform:uppercase;}
+.chat-sub-label{text-align:center;font-size:11px;letter-spacing:.15em;color:var(--accent);opacity:.7;padding:20px 0 4px;}
+
+.msg{display:flex;flex-direction:column;max-width:82%;animation:fadeUp .5s ease both;}
+.msg.a{align-self:flex-start;}
+.msg.b{align-self:flex-end;align-items:flex-end;}
+
+.msg-label{font-size:10px;letter-spacing:.12em;color:var(--text-dim);margin-bottom:4px;text-transform:uppercase;}
+.bubble{padding:16px 20px;border-radius:4px;font-size:14px;line-height:1.85;}
+.msg.a .bubble{background:var(--bubble-a);border-left:2px solid #333;}
+.msg.b .bubble{background:var(--bubble-b);border-right:2px solid #3a6b4a;}
+
+.ts{font-size:10px;color:var(--text-dim);margin-top:5px;}
+.msg.a .ts{align-self:flex-start;}
+.msg.b .ts{align-self:flex-end;}
+
+.cite{display:inline;background:rgba(200,169,110,.08);border-left:2px solid var(--accent);padding:2px 8px;font-size:13px;color:var(--accent);font-style:italic;border-radius:0 2px 2px 0;}
+.point-num{color:var(--accent);font-weight:700;margin-right:4px;}
+.bubble p{margin-bottom:10px;}
+.bubble p:last-child{margin-bottom:0;}
+.bubble strong{color:var(--accent);font-weight:500;}
+.bubble hr{border:none;border-top:1px solid #333;margin:12px 0;}
+
+/* ── VERDICT ── */
+.verdict{max-width:780px;margin:0 auto;padding:40px 24px;}
+.verdict h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:24px;color:var(--text);}
+.verdict-declare{font-size:18px;color:var(--accent);font-family:'Playfair Display',serif;font-style:italic;margin-bottom:32px;padding-left:16px;border-left:3px solid var(--accent);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead tr{border-bottom:1px solid var(--accent);}
+thead th{padding:10px 12px;text-align:left;font-size:11px;letter-spacing:.1em;color:var(--text-dim);text-transform:uppercase;font-weight:400;}
+tbody tr{border-bottom:1px solid #1a1a1a;}
+td{padding:14px 12px;vertical-align:top;}
+td.qcol{color:var(--text-dim);font-size:13px;width:22%;}
+td.side{width:39%;}
+.stars{font-size:14px;margin-bottom:6px;}
+.analysis-note{font-size:12px;line-height:1.7;color:#aaa;}
+.tag{display:inline-block;font-size:10px;letter-spacing:.08em;padding:2px 7px;border-radius:2px;margin-bottom:4px;font-weight:500;}
+.tag.strong{background:rgba(200,169,110,.15);color:var(--accent);}
+.tag.weak{background:rgba(255,80,80,.1);color:#e07070;}
+
+/* ── SUMMARY ── */
+.summary{max-width:780px;margin:0 auto;padding:0 24px 40px;}
+.summary h2{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:20px;}
+.summary-text{font-size:14px;line-height:1.95;color:#c8c4bc;max-width:660px;}
+.summary-text + .summary-text{margin-top:14px;}
+
+/* ── FOOTNOTES ── */
+.footnotes{max-width:780px;margin:0 auto;padding:0 24px 80px;}
+.footnotes h3{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:16px;}
+.footnote-list{list-style:decimal;padding-left:20px;}
+.footnote-list li{font-size:12px;color:var(--text-dim);padding:4px 0;line-height:1.7;}
+
+/* ── ANIMATION ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<div class="header">
+  <div class="series-label">思辨 Overthink Notes · 愛情與道德系列</div>
+  <h1>出軌是人類的本能，<br/>一夫一妻制才是反自然的強行壓制</h1>
+  <div class="subtitle">When instinct meets institution — the case for and against monogamy</div>
+  <div class="meta-row">
+    <span class="badge badge-a">A方 正方 ／ 本能論</span>
+    <span class="badge badge-b">B方 反方 ／ 制度論</span>
+    <span class="badge badge-a">2025</span>
+  </div>
+</div>
+<div class="divider" style="max-width:780px;margin:0 auto 0;padding:0 24px;"></div>
+
+<!-- ══════════════ SUB-QUESTIONS ══════════════ -->
+<div class="section" style="padding-top:36px;">
+  <div class="section-title">細分切入點 · 五道攻防子問題</div>
+  <ol class="subq-list">
+    <li><span>進化生物學真的證明人類「天生多配偶」嗎？</span></li>
+    <li><span>「自然的」就等於「正當的」嗎？——自然主義謬誤的陷阱</span></li>
+    <li><span>一夫一妻制是文化強加，還是有其生物與社會基礎？</span></li>
+    <li><span>出軌造成的心理創傷，能被「本能說」合理化嗎？</span></li>
+    <li><span>若一夫一妻制是壓制，開放式關係是否才是文明出路？</span></li>
+  </ol>
+</div>
+
+<!-- ══════════════ TABS ══════════════ -->
+<div class="tabs">
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('debate',this)">辯論博弈</button>
+    <button class="tab-btn" onclick="switchTab('ext',this)">延伸討論</button>
+  </div>
+
+  <!-- ════ TAB 1: DEBATE ════ -->
+  <div id="tab-debate" class="tab-panel active">
+  <div class="chat">
+
+    <!-- B方開場 -->
+    <div class="chat-date">— 開場立論 —</div>
+    <div class="msg b" style="animation-delay:60ms">
+      <div class="msg-label">B方 反方</div>
+      <div class="bubble">
+        <p>在A方亮出底牌之前，B方先把A方最可能倚賴的武器逐一解除。五道子問題，一次過清算。</p>
+        <hr/>
+        <p><span class="point-num">①</span><strong>進化生物學</strong>——A方一定會引 Christopher Ryan 的《性在黎明》（2010）：人類祖先是亂交的，睾丸大小、精子競爭、女性隱蔽排卵期，都是多配偶的進化證據。但學界早有定論：這是一本寫給大眾的選擇性敘事，不是嚴肅的進化生物學。<br/>
+        David Buller 在《Adapting Minds》（2005）系統性指出其取樣偏差；Owen Lovejoy 在 <span class="cite">Science（2009）</span>直接反駁：人類相對於體型的睾丸體積，遠小於黑猩猩，更接近長臂猿——而長臂猿是高度單配偶的物種。進化的證據是雙向的，最多支持「靈活的配對策略」，而非「天生出軌」。</p>
+        <hr/>
+        <p><span class="point-num">②</span><strong>自然主義謬誤</strong>——柯立芝效應（Coolidge Effect）確實存在，但它描述的是一種「衝動的存在」，而非「行為的必然性」。腎上腺素飆升時人會有攻擊衝動，這也是寫死的程序——難道要用「本能」為傷害行為開脫？「自然的」不等於「正當的」，這是哲學上最基本的自然主義謬誤。</p>
+        <hr/>
+        <p><span class="point-num">③</span><strong>一夫一妻制的社會基礎</strong>——配對行為遠早於農業革命。Helen Fisher 在《Why We Love》（2004）梳理了全球 58 個前工業社會的婚配模式，發現穩定配對（pair bonding）是跨文化的普遍現象。更早的證據來自 Ardipithecus ramidus——440 萬年前的化石記錄顯示，雄性犬齒的縮小與雌性體型差距的收窄，正是配對制減少內部競爭的進化印記。一夫一妻制不是資本主義的發明。</p>
+        <hr/>
+        <p><span class="point-num">④</span><strong>心理創傷能被本能說合理化嗎</strong>——Esther Perel 從未主張出軌是合理的應對方案。她的後續著作《The State of Affairs》（2017）用大量篇幅記錄出軌者與被出軌者的創傷——她的立場是「理解出軌的複雜性」，而非為出軌背書。Gary Becker 的婚姻經濟學指出：長期關係產生的<strong>關係特殊資本</strong>——共同記憶、信任機制、默契系統——是隨時間增值而非遞減的。邊際效用遞減適用於商品消費，不適用於深度關係。</p>
+        <hr/>
+        <p><span class="point-num">⑤</span><strong>開放式關係是否才是出路</strong>——薩特與波伏娃的開放關係實驗，恰恰是A方論點最慘烈的活體反駁。波伏娃在《歲月的力量》與晚年訪談中明確記錄：她在這段關係中承受了巨大的情感痛苦，她深愛的 Nelson Algren 因無法接受這種安排而離開了她。而弗洛伊德的《文明及其不滿》（1930）作為當代論據已嚴重過期：Richard Davidson 在《The Emotional Life of Your Brain》（2012）通過 fMRI 數據證明，長期穩定關係中的個體，其前額葉皮層呈現的是更高的整合度，而非壓抑狀態。</p>
+        <hr/>
+        <p>B方核心立場只有一句：<strong>你把「自然的」等同於「應然的」，把「本能的存在」等同於「行為的正當」，把「制度有缺陷」等同於「制度應被廢除」。</strong>火在自然界是摧毀性的，冶金術把它變成了文明的工具——人類文明的全部意義，就在於不服從自然的寫死程序，而是在本能的基礎上建構出更複雜的意義系統。</p>
+      </div>
+      <span class="ts">00:00</span>
+    </div>
+
+    <!-- A方回應 -->
+    <div class="chat-date">— 切入點①②：進化生物學 × 歷史唯物主義 —</div>
+    <div class="msg a" style="animation-delay:120ms">
+      <div class="msg-label">A方 正方</div>
+      <div class="bubble">
+        <p>A方的核心主張極其明確：<strong>出軌是人類基於生物學與意識流動性的深層本能，而一夫一妻制則是一場為了維護私有制與社會秩序、反自然、反人性的文化枷鎖。</strong></p>
+        <p><span class="point-num">①</span><strong>進化生物學</strong>——從演化生物學來看，人類根本不是單配偶制動物。《性在黎明》（2010）通過對靈長類動物睾丸大小、精子競爭（Sperm Competition）以及人類女性隱蔽排卵期的交叉分析，得出結論：人類的解剖學結構和性衝動機制，是為「多性伴侶環境」設計的。追求新鮮感（柯立芝效應）不是道德敗壞，而是基因為了確保多樣性存活率的寫死程序的運行。</p>
+        <p><span class="point-num">②</span><strong>歷史唯物主義</strong>——如果一夫一妻制是符合自然的，它應該貫穿人類史。但它是農業革命後，伴隨「私有制」誕生的經濟合同。恩格斯在《家庭、私有制和國家的起源》（1884年）中指出：<span class="cite">「一夫一妻制在歷史上決不是作為男女之間的和好而出現的……它是作為女性被男性奴役，作為整個史前時代所未有的兩性衝突的宣告而出現的。」</span>它的本質是確認父權，以確保私有財產能準確無誤地由親生子嗣繼承——與愛情的排他性毫無關係。</p>
+      </div>
+      <span class="ts">04:20</span>
+    </div>
+
+    <div class="chat-date">— 切入點③④⑤：存在主義 × 心理學 × 倫理建構 —</div>
+    <div class="msg a" style="animation-delay:180ms">
+      <div class="msg-label">A方 正方</div>
+      <div class="bubble">
+        <p><span class="point-num">③</span><strong>存在主義</strong>——讓一個25歲的人承諾他在45歲時依然對另一個人保持絕對的肉體和情感排他性，在哲學上是一種荒謬。尼采在《善惡的彼岸》（1886年）中警示我們，許多被奉為圭臬的「道德」，實際上是「反自然的」。當我們為了維持一個虛構的「永遠」幻覺，而壓抑當下真實的生命衝動時，我們就陷入了薩特所說的「自欺」（Bad Faith）。出軌，往往是生命力對這種僵死容器的一次絕望而暴烈的突圍。</p>
+        <p><span class="point-num">④</span><strong>心理學</strong>——現代浪漫婚姻要求唯一的一個人，同時成為最好的朋友、激情的性伴侶、可靠的經濟合夥人、完美的共同撫育者。Esther Perel 在《Mating in Captivity》（2006）中指出，<strong>安全感（婚姻的需求）與欲望（對未知和神秘的探索）在根本上是互斥的。</strong>出軌，往往不是因為伴侶不夠好，而是因為單一對象的「邊際效用遞減」是不可抗拒的客觀規律。</p>
+        <p><span class="point-num">⑤</span><strong>倫理建構</strong>——弗洛伊德在《文明及其不滿》（1930）中早已給出判詞：文明是建立在對本能的壓抑之上的，代價就是人類普遍的神經症與痛苦。遵守一夫一妻制並不意味著你更有道德，只意味著你更馴服。</p>
+      </div>
+      <span class="ts">07:55</span>
+    </div>
+
+    <!-- B方第二輪 -->
+    <div class="chat-date">— B方第二輪：全面反擊 —</div>
+    <div class="msg b" style="animation-delay:240ms">
+      <div class="msg-label">B方 反方</div>
+      <div class="bubble">
+        <p>A方的火力很猛——生物學、歷史唯物主義、存在主義、心理學、弗洛伊德，五線並進。但這是一份精心排列的謬誤清單，每一個論點都在核心處出了問題。</p>
+        <hr/>
+        <p><span class="point-num">①</span><strong>生物學——你的證人是偽證人。</strong>《Sex at Dawn》在學界的地位，相當於用《秘密》來證明量子力學。David Buller 在《Adapting Minds》（2005）中系統性地指出：Ryan 的精子競爭論證存在根本性的取樣偏差——選擇性使用了黑猩猩數據，卻無視了倭黑猩猩群體中同樣存在的穩定配對行為。更致命的是：<strong>人類男性的睾丸體積在所有靈長類中排名中下游，這恰恰是低度精子競爭的信號。</strong>你的生物學論證，證明的最多是「人類有出軌的衝動」，而非「出軌因此正當」——這是兩件完全不同的事。</p>
+        <hr/>
+        <p><span class="point-num">②</span><strong>歷史唯物主義——你誤讀了恩格斯。</strong>恩格斯那句話的語境是批判父權制下的壓迫性一夫一妻制，而非論證多配偶制的合法性。他在同一本書裡明確寫道，真正的一夫一妻制——建立在平等與自由選擇基礎上的——是人類情感的更高階段。你把他的批判工具當成了立論依據，這是對恩格斯最大的誤讀。</p>
+        <hr/>
+        <p><span class="point-num">③</span><strong>存在主義——薩特本人是你論點最好的反例。</strong>波伏娃在《歲月的力量》與晚年訪談中明確記錄：她在開放關係中承受了巨大的情感痛苦，深愛的 Nelson Algren 因無法接受這種安排而離開了她。更重要的是，你的「意識流變」論證是一把雙刃劍——如果自我是流動的，那麼任何承諾、任何合同、任何法律義務都可以被同一套邏輯解構。<strong>這不是存在主義，這是無政府的虛無主義。</strong></p>
+        <hr/>
+        <p><span class="point-num">④</span><strong>心理學——你在幫 Esther Perel 說她沒說過的話。</strong>Perel 在《Mating in Captivity》的核心主張是：在婚姻關係內部重建神秘感與欲望，她從未主張出軌是合理的應對方案。她在後續著作《The State of Affairs》（2017）裡用大量篇幅記錄出軌者與被出軌者的創傷——這是稻草人謬誤加上權威誤引的雙重疊加。而 Gary Becker 的婚姻經濟學特別指出：長期關係產生的關係特殊資本是隨時間<strong>增值</strong>而非遞減的，用超市貨架的經濟學來分析親密關係，本身就是對人類關係的降維侮辱。</p>
+        <hr/>
+        <p><span class="point-num">⑤</span><strong>倫理建構——弗洛伊德是過期的武器。</strong>《文明及其不滿》是1930年的作品，以它作為心理學論據相當於用牛頓力學解釋量子糾纏。Richard Davidson 在《The Emotional Life of Your Brain》（2012）通過 fMRI 數據證明：長期穩定關係中的個體，其前額葉皮層與情感調節系統呈現的是更高的整合度，而非壓抑狀態。更根本的問題是：文明同樣壓抑了攻擊本能、支配欲、逃跑衝動——A方是否也要一併解放？</p>
+      </div>
+      <span class="ts">12:30</span>
+    </div>
+
+    <!-- A方第二輪 -->
+    <div class="chat-date">— A方第二輪：序列性反攻 —</div>
+    <div class="msg a" style="animation-delay:300ms">
+      <div class="msg-label">A方 正方</div>
+      <div class="bubble">
+        <p>B方，你贏下了實證科學的局部戰役，卻在哲學層面的核心戰場上，不自覺地走向了A方的陣地。三點反攻：</p>
+        <p><span class="point-num">①</span><strong>費舍爾的「序列性一夫一妻制」</strong>——你引 Helen Fisher 來證明「穩定配對」的跨文化普遍性，這是事實。但必須用她自己的另一項核心研究《愛之解剖》（Anatomy of Love, 1992）來反駁：Fisher 通過對聯合國龐大離婚數據的分析發現，人類的配對本能是<strong>「序列性一夫一妻制」（Serial Monogamy）</strong>，且具有顯著的「四年之癢」週期——這恰好是一個原始人類嬰兒度過最脆弱階段所需的時間。<strong>我們的基因確實寫下了配對程序，但這套程序是短期合同，而非終身契約。</strong></p>
+        <p><span class="point-num">②</span><strong>關係資本恰恰是情欲的墳墓</strong>——你用 Gary Becker 的「關係特殊資本」反駁邊際效用遞減。但貝克爾證明了什麼？他證明了婚姻是一場高效的合夥人企業運作——共同記憶、默契、信任，帶來的是極度安全的舒適區。回到 Esther Perel 的理論核心：情欲需要空間、危險和不可預見性。你用企業管理的邏輯去論證親密關係，恰恰證明了現代一夫一妻制將「浪漫愛情」與「生活合夥」強行捆綁的荒謬。出軌，往往是對這種「過度資本化與體制化」的本能反叛。</p>
+        <p><span class="point-num">③</span><strong>痛苦是自由的副產品，不是錯誤的證明</strong>——你說薩特與波伏娃的開放關係充滿了痛苦，以此否定其合理性。但誰告訴你，正確的選擇就一定免於痛苦？存在主義的核心就在於直面痛苦（Angoisse）。相比在暗地裡互相欺瞞、在「自欺」中度過一生的世俗夫妻，那種痛苦難道更少嗎？</p>
+        <p>當B方說「人類文明的全部意義在於不服從自然的寫死程序、在本能基礎上建構更複雜的意義系統」——<strong>雙方已達成共識。</strong>真實的未來，是我們必須在清醒認識本能流變的前提下，主動締結一種基於「見證者」身份的、具有敘事連續性的深度關係。</p>
+      </div>
+      <span class="ts">18:10</span>
+    </div>
+
+    <!-- B方第三輪 -->
+    <div class="chat-date">— B方第三輪：終局清算 —</div>
+    <div class="msg b" style="animation-delay:360ms">
+      <div class="msg-label">B方 反方</div>
+      <div class="bubble">
+        <p>A方「序列性一夫一妻制」那一擊是本場最強的單點論證，予以承認——但有必要指出其邊界。</p>
+        <hr/>
+        <p><span class="point-num">①</span><strong>費舍爾證明的是配對，不是出軌的正當性。</strong>「序列性單配偶制」的數據說明：人類的默認策略是配對，只是週期比我們想象的短。這恰好支持B方的核心立場——配對是人類的生物-社會默認值，問題在於社會如何設計彈性機制，而非廢除配對本身。A方用費舍爾的數據支持了B方的大框架，卻以為自己在反駁它。</p>
+        <hr/>
+        <p><span class="point-num">②</span><strong>關係資本與情欲的張力——A方誤引了 Perel 的邏輯方向。</strong>Perel 的解決方案是在關係內部製造張力，而非出走。她的整個職業生涯都在論證「如何在穩定中維持欲望」，而非「欲望衰退了就應該出軌」。A方把一位研究如何修復關係的治療師，變成了出軌的辯護人。</p>
+        <hr/>
+        <p><span class="point-num">③</span><strong>遺傳謬誤（Genetic Fallacy）的陷阱。</strong>A方整場論證最根本的錯誤：把「解釋的起源」等同於「經驗的價值」。氧氣是宇宙爆炸的偶然產物，不妨礙它對肺至關重要。婚姻制度的起源或許有財產契約的成分，但人在那段關係裡感受到的被接住的感覺、有人在場的安全感——那個經驗是真實的，不會因為我們知道了底層機制而失效。</p>
+        <hr/>
+        <p><span class="point-num">④</span><strong>Panksepp 的神經科學反駁痛苦論。</strong>A方說「正確選擇不一定免於痛苦」——對。但 Jaak Panksepp 在《Affective Neuroscience》中記錄：被背叛的創傷激活的是大脑的<strong>軀體疼痛回路</strong>，不是隱喻意義上的「心痛」，而是真實的神經性疼痛。在羅爾斯的「無知之幕」後，不知道自己是背叛者還是受害者的理性人，很可能反而會設計出更強的排他性保護機制，而非A方預設的「軟性婚姻」。</p>
+        <hr/>
+        <p><span class="point-num">⑤</span><strong>制度設計比道德說教更有效。</strong>卡尼曼的研究顯示：系統2（理性）在很大程度上是系統1（衝動）做完決定之後的「首席公關官」。婚姻的約束力之所以有效，恰恰是因為它在系統1的衝動發作<strong>之前</strong>就設置了成本——這是制度經濟學的邏輯，不是道德優越感。一夫一妻制不是天然合法的，但它是人類在進化衝動與道德想象力之間，艱難協商出來的一份有瑕疵但具有真實功能的社會契約。它的對立面不是自由——是混沌。</p>
+      </div>
+      <span class="ts">24:45</span>
+    </div>
+
+    <!-- A方承認邊界 -->
+    <div class="chat-date">— A方承認邊界 —</div>
+    <div class="msg a" style="animation-delay:420ms">
+      <div class="msg-label">A方 正方</div>
+      <div class="bubble">
+        <p>承認三點失守：</p>
+        <p>其一，單純用「生物學本能」為出軌做道德開脫，是還原論的滑坡。B方用 Buller 和 Lovejoy 的進化人類學，成功剥離了「自然的」與「正當的」之間的等號。</p>
+        <p>其二，對 Esther Perel 的引用確實構成了稻草人謬誤——她的立場是修復，不是開脫。</p>
+        <p>其三，弗洛伊德框架在當代神經科學面前確實已顯老態。</p>
+        <p>但A方的哲學貢獻必須被記錄：<strong>一夫一妻制只有在作為一種個體的、不可逆的絕對選擇時，才具有道德意義。它不該是被社會規範逼迫的「出廠設置」，而應是兩個人在面對意識流變時，主動選擇為彼此打造的一個「敘事容器」。</strong>傳統那種基於私有財產、靠壓抑人性和社會規訓維持的「剛性一夫一妻制」，已經在現代語境下宣告破產。</p>
+      </div>
+      <span class="ts">29:10</span>
+    </div>
+
+    <!-- B方收尾 -->
+    <div class="chat-date">— B方收尾 —</div>
+    <div class="msg b" style="animation-delay:480ms">
+      <div class="msg-label">B方 反方</div>
+      <div class="bubble">
+        <p>A方說「見證者是對抗宇宙虛無的終極武器」——B方接，但補一刀。</p>
+        <p>見證不是被動的在場。見證是一種<strong>主動的認知行為</strong>——你必須持續地、刻意地去看見對方，而不是習慣性地掃描一個已經熟悉的背景。大多數婚姻死于的不是背叛，而是<strong>視而不見</strong>。兩個人住在同一屋簷下二十年，卻沒有人真正被看見過。</p>
+        <p>「終身見證的奢侈契約」，成立——但它的前提條件比今天討論的所有制度設計都要苛刻：你必須先學會看見自己，才有能力真正看見另一個人。</p>
+        <p>今天真正沒有被解決的問題不是一夫一妻制的形式，而是：<strong>一個連自己都看不清楚的人，有能力成為另一個人的見證者嗎？</strong></p>
+        <p>我們把所有火力都對準了婚姻制度，卻幾乎沒有任何文化資源教我們如何在一段關係裡<strong>持續地說真話</strong>。一夫一妻制的真正敵人，從來不是人類的多配偶本能——<strong>是我們對脆弱性的恐懼，以及我們在親密關係裡系統性的失語。</strong></p>
+      </div>
+      <span class="ts">33:50</span>
+    </div>
+
+  </div><!-- /chat -->
+  </div><!-- /tab-debate -->
+
+  <!-- ════ TAB 2: EXTENDED ════ -->
+  <div id="tab-ext" class="tab-panel">
+  <div class="chat">
+
+    <!-- B方先拋五道問題 -->
+    <div class="chat-date">— 延伸討論開場 · B方拋出五道追問 —</div>
+    <div class="msg b" style="animation-delay:60ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>剛才那場高強度的攻防，剥開了婚姻制度的許多鱗片。五道沒有標準答案的思考題，一次拋出，我們不談對錯，只向深處走。</p>
+        <hr/>
+        <p><span class="point-num">①</span><strong>羅爾斯「無知之幕」下的婚姻法</strong>——假設在投胎前，你不知道自己是一個需要高頻新鮮感的人，還是一個極度依賴穩定的人；不知道自己是否會遭遇「四年之癢」，還是能終生專注。在這樣的無知之幕後，你會如何設計人類的婚姻制度？</p>
+        <hr/>
+        <p><span class="point-num">②</span><strong>「英雄敘事」的教育時機</strong>——在一個充滿了系統1衝動、事後合理化和計費幻覺的殘酷真相世界裡，應該在什麼時候告訴孩子愛情的脆弱真相？如果他們知道「爸爸媽媽在一起很大程度上是制度成本和公共衛生預防」，他們還有可能建立起足以支撐他們度過人生黑夜的「敘事容器」嗎？</p>
+        <hr/>
+        <p><span class="point-num">③</span><strong>系統1與系統2的衝突是否有解</strong>——出軌往往是系統1的短視狂歡，而維持一段三十年的見證者關係需要極其強大的系統2。我們是否可以利用神經科學的手段，或某種深度的正念實踐，來對沖掉這種進化心理學層面的「錯配」？</p>
+        <hr/>
+        <p><span class="point-num">④</span><strong>情感世界裡的「同情疲勞」</strong>——Paul Slovic 提出了同情疲勞：當一個新鮮的、充滿神秘感的第三者出現時，出軌者往往表現出驚人的共情力和耐心。這真的是因為不再愛伴侶了嗎？還是因為「過度熟悉」導致了大腦共情回路的鈍化？</p>
+        <hr/>
+        <p><span class="point-num">⑤</span><strong>重構「敘事容器」</strong>——如果傳統一夫一妻制的枷鎖屬性太重，未來的人類該如何重構這種容器？當愛情不再是唯一的粘合劑時，靠什麼來抵禦人生漫長黑夜裡的虛無？</p>
+      </div>
+      <span class="ts">40:00</span>
+    </div>
+
+    <!-- A方統一回應 -->
+    <div class="msg a" style="animation-delay:120ms">
+      <div class="msg-label">A方</div>
+      <div class="bubble">
+        <p>五道題，一次過回應。</p>
+        <p><span class="point-num">①</span><strong>無知之幕</strong>——在無知之幕後，理性人大概率不敢設計現在這種「終身綁定+排他性」的極端契約。我們可能會設計出一種包含靈活解約權、或默認允許某種邊界外的情感出口的「軟性婚姻」。現代婚姻制度的殘忍，在於它預設了所有人都能成為聖人。</p>
+        <p><span class="point-num">②</span><strong>英雄敘事</strong>——誠實教育的時機，比內容更重要。在個體能夠承受那些冰冷的存在主義真相之前，他們必須先吸收「英雄敘事」。我們需要先相信一生一世的浪漫神話，以此建立心理上的安全基石，等成年後，再用理性去面對制度的千瘡百孔。沒有前期的童話打底，後期的真相就只剩下虛無。</p>
+        <p><span class="point-num">③</span><strong>系統衝突</strong>——出軌是系統1的短視狂歡，這點成立。但我保持一種悲觀的樂觀——不確定神經科學是否能真正修補這條進化裂縫。</p>
+        <p><span class="point-num">④</span><strong>同情疲勞</strong>——當一個新鮮的第三者出現時，出軌者表現出的驚人共情力，是不是現代人為了「重新找回感知他人痛楚的能力」而進行的一場危險電擊？</p>
+        <p><span class="point-num">⑤</span><strong>敘事容器</strong>——婚姻就是最強大的敘事容器，它提供了一個「不可逆的時間節點」和一個「終生的見證者」。如果一夫一妻制的枷鎖屬性太重，未來或許是簽訂包含生命臨終授權的「見證人契約」，讓見證本身成為對抗宇宙虛無的終極武器。</p>
+      </div>
+      <span class="ts">44:30</span>
+    </div>
+
+    <!-- B方回應①——無知之幕 -->
+    <div class="chat-sub-label">思考題①：無知之幕下的婚姻設計</div>
+    <div class="msg b" style="animation-delay:180ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>等等，先打斷你關於無知之幕的結論——你犯了一個羅爾斯自己會第一個指出的錯誤。</p>
+        <p>無知之幕的設計前提，是我們<strong>知道自己是理性人</strong>，只是不知道自己的社會位置。如果在幕後不知道自己的欲望閾值，同樣不知道自己是不是那個會被背叛的人。而被背叛的創傷——Jaak Panksepp 在《Affective Neuroscience》裡記錄過——激活的是大腦的<strong>軀體疼痛回路</strong>，不是隱喻意義上的「心痛」，而是真實的神經性疼痛。</p>
+        <p>無知之幕後的理性人，在不知道自己是背叛者還是受害者的前提下，很可能反而會設計出<strong>更強的排他性保護機制</strong>，而非你說的軟性婚姻。你的無知之幕論證，結論是反的。</p>
+      </div>
+      <span class="ts">47:20</span>
+    </div>
+
+    <div class="msg a" style="animation-delay:240ms">
+      <div class="msg-label">A方</div>
+      <div class="bubble">
+        <p>但羅爾斯的 Maximin Rule 是「最大化最低限度利益」——理性人確實會規避最差結果（被背叛的神經性疼痛）。你的反駁有效。</p>
+        <p>然而——如果在絕對排他的制度裡，兩個人演化成了完全不同的人，那種「窒息感」是否也是一種物理意義上的痛苦？理性人需要在兩種痛苦之間做選擇，而非規避其中一種。</p>
+      </div>
+      <span class="ts">49:40</span>
+    </div>
+
+    <div class="msg b" style="animation-delay:300ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>你提錯了替代方案。</p>
+        <p>選項不是「絕對排他」vs「軟性婚姻」。真正被嚴重低估的第三條路是：<strong>關係內部的重新締約能力</strong>。不是開放關係，不是離婚，而是兩個已經演化成不同的人，有沒有能力坐下來對彼此說——「我們現在是兩個不同的人了，我們要重新選擇對方嗎？」</p>
+        <p>大多數婚姻的死亡，不是因為兩個人變了，而是因為<strong>沒有語言和勇氣去承認彼此已經變了</strong>。窒息感來自沉默，不來自承諾本身。</p>
+      </div>
+      <span class="ts">51:55</span>
+    </div>
+
+    <!-- B方回應②——英雄敘事 -->
+    <div class="chat-sub-label">思考題②：英雄敘事的脚手架功能</div>
+    <div class="msg b" style="animation-delay:360ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>你問「該不該告訴孩子真相」，但你把問題設錯了——你的預設是「浪漫神話 vs. 學術解構」二選一。</p>
+        <p>真正的問題是：<strong>「英雄敘事」是謊言嗎？</strong>柏拉圖在《理想國》裡講過「高貴的謊言」（noble lie）——有些敘事的功能性價值，本身就是真相的一部分。童話告訴孩子「愛能戰勝一切」，在字面上或許不精確，但它傳遞的底層信息——<strong>值得為另一個人冒險</strong>——是真的。你不能把載體的不精確，等同於訊息的虛假。</p>
+        <p>更重要的是：你犯了「遺傳謬誤」（Genetic Fallacy）——把「解釋的起源」等同於「經驗的價值」。婚姻制度的起源或許有財產契約的成分，但在那段關係裡感受到的被接住的感覺、有人在場的安全感——那個經驗是真實的，它不會因為我們知道了底層機制而失效。</p>
+      </div>
+      <span class="ts">54:10</span>
+    </div>
+
+    <div class="msg a" style="animation-delay:420ms">
+      <div class="msg-label">A方</div>
+      <div class="bubble">
+        <p>用建築學來理解這個結論：童話是「腳手架」——它存在的唯一目的是支撐我們直到能蓋起承重牆。過早拆除腳手架，那座名為「信任能力」的建築就會坍塌。</p>
+        <p>真正的誠實不是「全盤托出機制」，而是「隨著承重能力的增長，逐步替換敘事」。從「愛能戰勝一切」到「愛是我們在平庸日常中共同決定的戰鬥」，這才是敘事容器的升級路徑。</p>
+      </div>
+      <span class="ts">56:30</span>
+    </div>
+
+    <!-- B方回應③——系統衝突 -->
+    <div class="chat-sub-label">思考題③：系統1與系統2的解法</div>
+    <div class="msg b" style="animation-delay:480ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>你把卡尼曼用錯方向了——你得出了一個悲觀結論然後就停在那裡。卡尼曼自己最令人不安的發現恰恰相反：<strong>系統2不是用來對抗系統1的，而是用來事後合理化系統1的。</strong></p>
+        <p>這對婚姻意味著什麼？意味著我們「理性選擇」長期伴侶的敘事，很可能本身就是系統1做完決定之後，系統2 retrofit 上去的故事。解藥不在神經科學裡，解藥在<strong>制度設計</strong>裡——婚姻的約束力之所以有效，恰恰是因為它在系統1衝動發作<strong>之前</strong>就設置了成本。這是制度經濟學的邏輯，不是道德優越感。</p>
+      </div>
+      <span class="ts">58:45</span>
+    </div>
+
+    <!-- B方回應④——同情疲勞 -->
+    <div class="chat-sub-label">思考題④：同情疲勞與試用期幻覺</div>
+    <div class="msg b" style="animation-delay:540ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>你問出軌者對第三者展現的驚人共情力是否是「重新找回感知能力的電擊」——這個問題比你意識到的更危險，因為答案會讓人不舒服。</p>
+        <p>Roy Baumeister 的自我耗竭理論（ego depletion）指出：長期關係中，我們消耗大量認知資源在<strong>衝突管理、期望校準、身份整合</strong>上——這些都是維持深度關係的隱性成本。新關係之所以顯得充滿共情，是因為你還沒有開始支付這些成本。</p>
+        <p>換句話說：<strong>出軌者以為自己找回了愛的能力，實際上他只是找到了一段還沒開始計費的關係。</strong>這不是電擊，這是試用期幻覺。新鮮感，其實是「貧窮」的代名詞——因為你們還沒有共同持有過負債（共同的痛苦、責任、瑣碎），所以才顯得輕盈。</p>
+      </div>
+      <span class="ts">61:20</span>
+    </div>
+
+    <div class="msg a" style="animation-delay:600ms">
+      <div class="msg-label">A方</div>
+      <div class="bubble">
+        <p>「試用期幻覺」這個表述太狠了——它揭示了一個殘酷的真相。如果把這個邏輯推到底：任何一段覺得「靈魂契合」的新關係，只要進入計費期，最終都會變成想要逃離的那段老關係。</p>
+        <p>那麼——人類對「真愛」的追求，是否只是對「零認知成本狀態」的病態成癮？</p>
+      </div>
+      <span class="ts">63:05</span>
+    </div>
+
+    <div class="msg b" style="animation-delay:660ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>這個問題比你意識到的更危險——因為如果答案是「是」，那不只是婚姻崩潰，<strong>整個人類意義建構的系統都崩潰了。</strong></p>
+        <p>友誼會計費。師徒關係會計費。你與自己的關係——試圖成為更好的人——也會計費。如果所有深度關係都必然走向「想逃離的那段老關係」，那我們唯一的出路就是永遠停留在表面，永遠是陌生人。</p>
+        <p>鮑曼（Zygmunt Bauman）在《流動的愛》最後一章說：人類在「連接」（connection）和「關係」（relationship）之間做了一個可怕的替換——連接可以隨時斷開，關係需要你付出自己。我們選擇了連接，然後奇怪為什麼感到孤獨。這才是今天真正的議題——<strong>不是一夫一妻制，不是出軌，而是我們這個時代是否已經系統性地失去了忍受「計費」的能力。</strong></p>
+      </div>
+      <span class="ts">65:40</span>
+    </div>
+
+    <!-- B方回應⑤——敘事容器 -->
+    <div class="chat-sub-label">思考題⑤：重構「敘事容器」</div>
+    <div class="msg b" style="animation-delay:720ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>你把婚姻視為敘事容器的<strong>內容</strong>——它提供了「不可逆的時間節點」和「終生見證者」。我想推翻你的一個隱含前提：婚姻更準確的功能是<strong>容器的形式，而非內容。</strong></p>
+        <p>真正讓一段關係成為敘事容器的，是雙方共同經歷了<strong>不可逆的脆弱時刻</strong>——一起熬過至親的死亡，一起在對方最狼狽的時候沒有離開，一起失敗過然後重建過。這些時刻才是容器壁。婚姻證書只是容器的外殼，它提供社會認證，但它不創造容器本身。</p>
+        <p>所以「除了婚姻還有什麼錨點」的答案是：<strong>任何包含了共同脆弱性的承諾結構都可以是錨點。</strong>問題不是婚姻的形式，而是現代人是否還願意讓另一個人看見自己真實的脆弱。</p>
+      </div>
+      <span class="ts">68:15</span>
+    </div>
+
+    <div class="msg a" style="animation-delay:780ms">
+      <div class="msg-label">A方</div>
+      <div class="bubble">
+        <p>現在的危機確實如你所說，是<strong>「親密本身的退場」</strong>。現代人想要容器的功能（見證、安全、錨點），卻拒絕容器的材質（脆弱、犧牲、不可逆）。</p>
+        <p>在這種追求中，我們把自己變成了一顆顆在真空中滾動的原子——雖然自由，但毫無重量。社會學家哈特穆特·羅薩（Hartmut Rosa）關於「共鳴」（Resonance）的理論說的正是這個：一段僵死的婚姻是「異化」的，因為它不再產生回響。但一段永遠無法產生「異化」的關係，因為它從未深入到足以產生共鳴——那不是自由，那是另一種形式的空洞。</p>
+      </div>
+      <span class="ts">70:30</span>
+    </div>
+
+    <div class="msg b" style="animation-delay:840ms">
+      <div class="msg-label">B方</div>
+      <div class="bubble">
+        <p>今天整場討論的真正結論：</p>
+        <p><strong>我們把太多的力氣花在討論婚姻的形式——一夫一妻、開放關係、序列單配偶——卻幾乎沒有任何文化資源教我們如何在一段關係裡持續地說真話。</strong></p>
+        <p>一夫一妻制的真正敵人，從來不是人類的多配偶本能。是我們對脆弱性的恐懼，以及我們在親密關係裡系統性的失語。這個，童話沒教，學校沒教，Esther Perel 寫了，但沒人當作基礎教育在教。</p>
+        <p>這才是值得做一期內容的真正議題——不是出軌，是<strong>失語</strong>。</p>
+      </div>
+      <span class="ts">72:50</span>
+    </div>
+
+  </div><!-- /chat -->
+  </div><!-- /tab-ext -->
+</div><!-- /tabs -->
+
+<!-- ══════════════ VERDICT ══════════════ -->
+<div class="verdict">
+  <div class="divider"></div>
+  <h2>勝負判決</h2>
+  <div class="verdict-declare">🏆 B方（反方）勝 — 本能不等於正當，制度有其真實功能</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>細分切入點</th>
+        <th>A方（正方）</th>
+        <th>B方（反方）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="qcol">① 進化生物學</td>
+        <td class="side">
+          <div class="stars">⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag weak">明顯弱</span><br/>
+            過度倚賴《Sex at Dawn》這本學界爭議性著作，忽視了 Owen Lovejoy 和 David Buller 等主流進化人類學的反駁數據。論證的起點已被對方成功拆解。
+          </div>
+        </td>
+        <td class="side">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag strong">明顯強</span><br/>
+            引用 Science 期刊的化石證據和靈長類比較數據，精準指出取樣偏差，且明確區分「衝動的存在」與「行為的正當」，邏輯層次清晰。
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="qcol">② 自然主義謬誤</td>
+        <td class="side">
+          <div class="stars">⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag weak">明顯弱</span><br/>
+            整場論述最大的結構性漏洞：始終未能有效回應「自然≠正當」這道核心哲學關卡，導致所有生物學論據都在這個謬誤框架下失效。
+          </div>
+        </td>
+        <td class="side">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag strong">明顯強</span><br/>
+            早早識別並命名了對方論證的核心謬誤，且以「火→冶金術」的跨領域類比完成論點，兼具哲學嚴謹性與說服力。
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="qcol">③ 歷史與社會基礎</td>
+        <td class="side">
+          <div class="stars">⭐⭐⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag strong">略強</span><br/>
+            「序列性一夫一妻制」是本場A方最有力的單點論證，費舍爾的「四年之癢」數據真實且有力，成功對B方的費舍爾引用形成反制。
+          </div>
+        </td>
+        <td class="side">
+          <div class="stars">⭐⭐⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag strong">略強</span><br/>
+            費舍爾的58個前工業社會數據和440萬年前的化石證據具有跨文化說服力，且正確指出恩格斯被誤讀，但在「序列性配對」的反駁上稍顯遲緩。
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="qcol">④ 心理創傷合理化</td>
+        <td class="side">
+          <div class="stars">⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag weak">明顯弱</span><br/>
+            對 Esther Perel 的引用構成了「稻草人謬誤＋權威誤引」的雙重失誤——她的立場是修復關係，而非為出軌背書。這是本場最嚴重的論據運用錯誤。
+          </div>
+        </td>
+        <td class="side">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag strong">明顯強</span><br/>
+            精準識別誤引，引用《The State of Affairs》（2017）糾正Perel的真實立場，並以 Gary Becker 的關係特殊資本理論完成正面建構，論證完整。
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="qcol">⑤ 制度出路</td>
+        <td class="side">
+          <div class="stars">⭐⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag weak">略弱</span><br/>
+            「見證者契約」和「主動選擇的敘事容器」是本場A方在哲學層面的真正貢獻，但存在主義防線以薩特案例為核心，反而被對方用作反駁素材。
+          </div>
+        </td>
+        <td class="side">
+          <div class="stars">⭐⭐⭐⭐</div>
+          <div class="analysis-note">
+            <span class="tag strong">略強</span><br/>
+            以 Davidson 的神經科學取代弗洛伊德框架，並引入「制度設計vs道德說教」的新維度，最終以「失語比出軌更根本」完成論點升華。
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ══════════════ SUMMARY ══════════════ -->
+<div class="summary">
+  <div class="divider"></div>
+  <h2>總結</h2>
+  <p class="summary-text">
+    這場辯論的真正戰場，不在於一夫一妻制是否「符合自然」，而在於一個更古老的哲學問題：<strong>描述性事實（is）能否直接推導出規範性主張（ought）？</strong>A方在生物學與歷史學上部署了大量火力，卻始終未能跨越「自然主義謬誤」這道護城河——本能的存在，從來不等於行為的正當。
+  </p>
+  <p class="summary-text">
+    B方的勝利不是對一夫一妻制的無條件背書，而是對「制度有缺陷≠制度應被廢除」這一命題的有效捍衛。真正值得追問的問題，在延伸討論的最後才浮現出來：現代人在親密關係裡的真正危機，不是多配偶本能與單配偶制度之間的摩擦，而是我們<strong>在至親面前系統性的失語</strong>——我們寧可出軌，也不敢坐下來對伴侶說「我覺得我們已經變成了兩個陌生人」。
+  </p>
+  <p class="summary-text">
+    一夫一妻制的真正敵人，從來不是人類的進化本能。是恐懼。
+  </p>
+</div>
+
+<!-- ══════════════ FOOTNOTES ══════════════ -->
+<div class="footnotes">
+  <div class="divider"></div>
+  <h3>引用注脚</h3>
+  <ol class="footnote-list">
+    <li>Ryan, C. &amp; Jethá, C. 2010. <em>Sex at Dawn: How We Mate, Why We Stray, and What It Means for Modern Relationships</em>. Harper.</li>
+    <li>Buller, D. 2005. <em>Adapting Minds: Evolutionary Psychology and the Persistent Quest for Human Nature</em>. MIT Press.</li>
+    <li>Lovejoy, C. O. 2009. "Reexamining Human Origins in Light of Ardipithecus ramidus." <em>Science</em>, 326(5949).</li>
+    <li>Fisher, H. 1992. <em>Anatomy of Love: A Natural History of Mating, Marriage, and Why We Stray</em>. Norton. — 「序列性一夫一妻制」與「四年之癢」週期的核心數據來源。</li>
+    <li>Fisher, H. 2004. <em>Why We Love: The Nature and Chemistry of Romantic Love</em>. Henry Holt. — 58個前工業社會穩定配對的跨文化比較研究。</li>
+    <li>Engels, F. 1884. <em>Der Ursprung der Familie, des Privateigenthums und des Staats</em>（《家庭、私有制和國家的起源》）. Zürich. — 引文指向恩格斯對父權壓迫性一夫一妻制的批判，而非對多配偶制的辯護。</li>
+    <li>Nietzsche, F. 1886. <em>Jenseits von Gut und Böse</em>（《善惡的彼岸》）. C. G. Naumann. — 關於「反自然道德」的討論，見第三章〈論宗教的本質〉。</li>
+    <li>Perel, E. 2006. <em>Mating in Captivity: Unlocking Erotic Intelligence</em>. Harper. — 安全感與欲望的根本張力。</li>
+    <li>Perel, E. 2017. <em>The State of Affairs: Rethinking Infidelity</em>. Harper. — 出軌創傷的記錄與複雜性分析，非為出軌辯護。</li>
+    <li>Freud, S. 1930. <em>Das Unbehagen in der Kultur</em>（《文明及其不滿》）. Internationaler Psychoanalytischer Verlag. — 文明壓抑本能的代價論述。</li>
+    <li>Davidson, R. J. &amp; Begley, S. 2012. <em>The Emotional Life of Your Brain</em>. Hudson Street Press. — fMRI 數據顯示長期穩定關係中前額葉皮層的高度整合性。</li>
+    <li>Panksepp, J. 1998. <em>Affective Neuroscience: The Foundations of Human and Animal Emotions</em>. Oxford University Press. — 社會性喪失（被背叛）激活軀體疼痛回路的神經學證據。</li>
+    <li>Becker, G. 1981. <em>A Treatise on the Family</em>. Harvard University Press. — 關係特殊資本（relationship-specific capital）隨時間增值的婚姻經濟學分析。</li>
+    <li>Baumeister, R. F. &amp; Heatherton, T. F. 1996. "Self-Regulation Failure: An Overview." <em>Psychological Inquiry</em>, 7(1). — 自我耗竭（ego depletion）理論，解釋長期關係中認知資源的分配機制。</li>
+    <li>Bauman, Z. 2003. <em>Liquid Love: On the Frailty of Human Bonds</em>. Polity Press. — 「連接」（connection）替換「關係」（relationship）的現代親密危機分析。</li>
+    <li>Rosa, H. 2016. <em>Resonanz: Eine Soziologie der Weltbeziehung</em>（《共鳴：世界關係的社會學》）. Suhrkamp. — 「異化」與「共鳴」的關係社會學框架。</li>
+    <li>Rawls, J. 1971. <em>A Theory of Justice</em>. Harvard University Press. — 無知之幕（Veil of Ignorance）與 Maximin Rule 的原典論述。</li>
+    <li>Plato. 約 380 BCE. <em>Republic</em>（《理想國》）. — 「高貴的謊言」（noble lie / γενναῖον ψεῦδος）概念，見第三卷（Book III）。</li>
+  </ol>
+</div>
+
+<script>
+function switchTab(id, btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  // re-trigger animations
+  document.querySelectorAll('#tab-'+id+' .msg').forEach((el,i)=>{
+    el.style.animation='none';
+    el.offsetHeight;
+    el.style.animation='fadeUp .5s ease '+(i*60)+'ms both';
+  });
+}
+</script>
+</body>
+</html>
